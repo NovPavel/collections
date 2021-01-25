@@ -174,6 +174,7 @@ public class LinkedList implements List {
             this.next = next;
         }
 
+
         @Override
         public String toString() {
             return  object + ", " + next ;
@@ -183,6 +184,16 @@ public class LinkedList implements List {
     // [Hello 1, Hello 2]
     @Override
     public String toString() {
-        return "[ " + root + ", size=" + size + " ]";
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("[");
+
+        Node temp = this.root;
+        while (true) {
+//            stringBuilder.append("")
+            temp = temp.getNext();
+
+        }
+
     }
 }
