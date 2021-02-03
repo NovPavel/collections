@@ -240,11 +240,8 @@ public class DeqLinkedList implements List {
 
         @Override
         public String toString() {
-            return "Node{" +
-                    "element=" + element +
-                    ", next=" + next +
-//                    ", prev=" + prev +
-                    '}';
+            return  element + ", " + next ;
+
         }
     }
 }
