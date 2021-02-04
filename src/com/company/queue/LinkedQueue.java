@@ -1,5 +1,6 @@
 package com.company.queue;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class LinkedQueue implements Queue {
@@ -55,12 +56,25 @@ public class LinkedQueue implements Queue {
 
     @Override
     public Object poll() {
-        return null;
+        if (size == 0) {
+            return null;
+        }
+        else {
+            Node head = this.head;
+            this.head = head.next;
+            Object old = head.object;
+            head.next = null;
+            head.object = null;
+            return old;
+        }
     }
 
     @Override
     public Object element() {
-        return null;
+        if (size == 0){
+            throw new NoSuchElementException();
+        }
+        return this.head.object;
     }
 
     @Override
@@ -112,11 +126,19 @@ public class LinkedQueue implements Queue {
 
         @Override
         public String toString() {
-            return "Node{" +
-                    "object=" + object +
+            return "{" +
+                    " " + object +
                     ", next=" + next +
                     '}';
         }
     }
 
+    @Override
+    public String toString() {
+        return "LinkedQueue{" +
+                "head: " + head +
+                "; tail=" + tail +
+                ", size=" + size +
+                '}';
+    }
 }

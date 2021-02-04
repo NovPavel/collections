@@ -31,7 +31,7 @@ public class ArrayQueue implements Queue {
             throw new NoSuchElementException();
         } else {
             Object old = objects[0];
-            for (int i = 0; i < objects.length; i++) {
+            for (int i = 0; i < objects.length - 1; i++) {
                 objects[i] = objects[i + 1];
             }
             size--;
@@ -45,7 +45,7 @@ public class ArrayQueue implements Queue {
             return null;
         } else {
             Object old = objects[0];
-            for (int i = 0; i < objects.length; i++) {
+            for (int i = 0; i < objects.length - 1; i++) {
                 objects[i] = objects[i + 1];
             }
             size--;
@@ -65,9 +65,27 @@ public class ArrayQueue implements Queue {
 
     @Override
     public Object peek() {
-        if (size > 0){
+        if (size > 0) {
             return objects[0];
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        for (int i = 0; i < objects.length - 1; i++) {
+            if (objects[i] == null) {
+                break;
+            } else {
+                stringBuilder.append(objects[i]);
+                if (objects[i + 1] != null) {
+                    stringBuilder.append(", ");
+                }
+            }
+        }
+        stringBuilder.append("]");
+        return stringBuilder.toString();
     }
 }
