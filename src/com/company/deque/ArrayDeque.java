@@ -1,6 +1,9 @@
 package com.company.deque;
 
+import com.company.stack.Stack;
+
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class ArrayDeque implements Deque {
     private Object[] arrays = new Object[10];
@@ -9,33 +12,41 @@ public class ArrayDeque implements Deque {
     private int size = 0;
 
     public static void main(String[] args) {
-        ArrayDeque arrayDeque = new ArrayDeque();
-        arrayDeque.addLast("Hello 1");
-        arrayDeque.addLast("Hello 2");
-        arrayDeque.addLast("Hello 3");
-        arrayDeque.addLast("Hello 4");
-        arrayDeque.addLast("Hello 5");
-        arrayDeque.addLast("Hello 6");
-        arrayDeque.addLast("Hello 7");
-        arrayDeque.addLast("Hello 8");
-        arrayDeque.addLast("Hello 9");
-        arrayDeque.addLast("Hello 10");
-        arrayDeque.pollLast();
+        Stack arrayDeque = new ArrayDeque();
+        arrayDeque.push("Hello 1");
+        arrayDeque.push("Hello 2");
+        arrayDeque.push("Hello 3");
+        arrayDeque.push("Hello 4");
+        arrayDeque.push("Hello 5");
 
+        System.out.println(arrayDeque);
+
+        System.out.println(arrayDeque.pop());
+        System.out.println(arrayDeque.pop());
+        System.out.println(arrayDeque.pop());
+        System.out.println(arrayDeque.pop());
+        System.out.println(arrayDeque.pop());
+//        System.out.println(arrayDeque.pop());
 
         System.out.println(arrayDeque);
     }
 
     @Override
     public boolean addFirst(Object object) {
-        return false;
+        if (size == arrays.length) throw new IllegalStateException();
+        if (head == 0) {
+            head = arrays.length;
+        }
+        arrays[head - 1] = object;
+        head--;
+        size++;
+        return true;
     }
+
 
     @Override
     public boolean addLast(Object object) {
-        if (this.tail == arrays.length){
-            this.tail = 0;
-        }
+        if (size == arrays.length) throw new IllegalStateException();
         if (arrays[this.tail] != null) return false;
         arrays[this.tail++] = object;
         size++;
@@ -44,32 +55,73 @@ public class ArrayDeque implements Deque {
 
     @Override
     public boolean offerFirst(Object object) {
-        return false;
+        if (size == arrays.length) return false;
+        if (head == 0) {
+            head = arrays.length;
+        }
+        arrays[head - 1] = object;
+        head--;
+        size++;
+        return true;
     }
 
     @Override
     public boolean offerLast(Object object) {
-        return false;
+        if (size == arrays.length) return false;
+        if (arrays[this.tail] != null) return false;
+        arrays[this.tail++] = object;
+        size++;
+        return true;
     }
 
     @Override
     public Object removeFirst() {
-        return null;
+        if (empty()){
+            throw new NoSuchElementException();
+        }
+        Object oldElement = arrays[this.head];
+        arrays[this.head] = null;
+        if (this.head == arrays.length){
+            head = 0;
+        } else {
+            head++;
+        }
+        size--;
+        return oldElement;
     }
 
     @Override
     public Object removeLast() {
-        return null;
+        if (empty()){
+            throw new NoSuchElementException();
+        }
+        if (this.tail == 0){
+            this.tail = arrays.length;
+        }
+        Object lastElementDeleted = arrays[this.tail - 1];
+        arrays[this.tail - 1] = null;
+            tail--;
+
+        size--;
+        return lastElementDeleted;
     }
 
     @Override
     public Object pollFirst() {
-        return null;
+        if (empty()) return false;
+        Object oldElement = arrays[this.head];
+        arrays[this.head] = null;
+        if (this.head == arrays.length){
+            head = 0;
+        } else {
+            head++;
+        }
+        return oldElement;
     }
 
     @Override
     public Object pollLast() {
-        if (tail == 0){
+        if (tail == 0) {
             tail = arrays.length;
         }
         Object removedLast = arrays[tail - 1];
@@ -80,22 +132,26 @@ public class ArrayDeque implements Deque {
 
     @Override
     public Object elementFirst() {
-        return null;
+        if (empty()) throw new NoSuchElementException();
+        return arrays[head];
     }
 
     @Override
     public Object elementLast() {
-        return null;
+        if (empty()) throw new NoSuchElementException();
+        return arrays[tail -1];
     }
 
     @Override
     public Object peekFirst() {
-        return null;
+        if (empty()) return null;
+        return arrays[head];
     }
 
     @Override
     public Object peekLast() {
-        return null;
+        if (empty()) return null;
+        return arrays[tail - 1];
     }
 
     @Override
@@ -105,37 +161,37 @@ public class ArrayDeque implements Deque {
 
     @Override
     public boolean offer(Object object) {
-        return false;
+        return offerFirst(object);
     }
 
     @Override
     public Object remove() {
-        return null;
+        return removeFirst();
     }
 
     @Override
     public Object poll() {
-        return null;
+        return pollFirst();
     }
 
     @Override
     public Object element() {
-        return null;
+        return elementFirst();
     }
 
     @Override
     public Object push(Object object) {
-        return null;
+        return addFirst(object);
     }
 
     @Override
     public Object pop() {
-        return null;
+        return removeFirst();
     }
 
     @Override
     public Object peek() {
-        return null;
+        return peekFirst();
     }
 
     @Override
@@ -145,7 +201,12 @@ public class ArrayDeque implements Deque {
 
     @Override
     public int search(Object object) {
-        return 0;
+        for (int i = 0; i < arrays.length ; i++) {
+            if (arrays[i].equals(object)){
+                return i + 1;
+            }
+        }
+        return -1;
     }
 
     @Override
